@@ -158,11 +158,11 @@ section.band{padding-block:clamp(56px,8vw,96px);border-top:1px solid var(--ink-3
 .menu-note{margin-top:20px;color:var(--muted);font-size:.85rem}
 .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media (max-width:860px){.menu-grid{grid-template-columns:1fr}}
-.menu-card{display:grid;gap:14px;align-content:space-between;background:var(--amber);color:var(--on-amber);border-radius:18px;padding:clamp(20px,3vw,28px);text-decoration:none;min-width:0;transition:transform .2s}
-.menu-card:hover{transform:translateY(-3px)}
-.menu-card .k{font:500 .72rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase}
+.menu-card{display:grid;gap:14px;align-content:space-between;background:var(--ink-2);color:var(--paper);border:1.5px solid var(--ink-3);border-radius:18px;padding:clamp(20px,3vw,28px);text-decoration:none;min-width:0;transition:transform .2s}
+.menu-card:hover{transform:translateY(-3px);border-color:var(--amber)}
+.menu-card .k{font:500 .72rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
 .menu-card h3{font-size:clamp(1.7rem,3.4vw,2.2rem)}
-.menu-card .go{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;background:var(--on-amber);color:var(--amber);font-weight:700;padding:.8em 1.2em;border-radius:999px}
+.menu-card .go{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;background:var(--amber);color:var(--on-amber);font-weight:700;padding:.8em 1.2em;border-radius:999px}
 .menu-card.soon{background:var(--ink-2);color:var(--muted);border:1.5px dashed var(--ink-3);cursor:default}
 .menu-card.soon:hover{transform:none}
 .menu-card.soon h3{color:var(--paper)}
