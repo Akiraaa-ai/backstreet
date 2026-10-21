@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Backstreet Cafe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Backstreet Cafe: 3 şube, menü, rezervasyon ve iletişim.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Outfit:wght@500;600;700;800&family=Nunito:wght@800;900&family=Manrope:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sokak tabelası hissi. Koyu, sıcak siyah zemin; sarı sadece vurgu ve tabelalarda, beyaz metin. Tek sütun bantlar, içerik 1120px. */
+:root{
+  --ink:#121110;        /* zemin: saf siyah değil, sıcak koyu */
+  --ink-2:#1b1a17;      /* kart/yüzey */
+  --ink-3:#26241f;      /* çizgi, input */
+  --paper:#f3efe6;      /* beyaz metin, kırık beyaz */
+  --muted:#a8a294;      /* ikincil metin */
+  --amber:#f2b705;      /* marka sarısı */
+  --amber-soft:#f2b70522;
+  --on-amber:#141210;
+  --ok:#7fc98f;
+  --f-display:"Outfit","Segoe UI",system-ui,sans-serif;
+  --f-sign:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-logo:"Nunito","Arial Rounded MT Bold",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,Menlo,Consolas,monospace;
+  --wrap:1120px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.05;text-wrap:balance;margin:0;letter-spacing:-.015em}
+h2{font-size:clamp(2.4rem,6vw,3.6rem)}
+h3{font-size:1.6rem}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.lead{color:var(--muted);max-width:60ch}
+.btn{display:inline-flex;align-items:center;gap:.5em;font:600 .95rem var(--f-body);padding:.8em 1.3em;border-radius:999px;border:1.5px solid var(--amber);text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn-solid{background:var(--amber);color:var(--on-amber)}
+.btn-solid:hover{background:#ffcb2e}
+.btn-ghost{background:transparent;color:var(--paper)}
+.btn-ghost:hover{background:var(--amber-soft)}
+.ph{font-family:var(--f-mono);font-size:.72rem;color:var(--amber);background:var(--amber-soft);border-radius:4px;padding:.1em .45em;white-space:nowrap}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ink-3)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.logo-mark{width:38px;height:38px;flex:none;border-radius:8px;background:var(--amber);color:var(--on-amber);display:grid;place-items:center;font:900 1.25rem var(--f-display)}
+.logo-text{font:900 1.6rem/1 var(--f-logo);text-transform:lowercase;letter-spacing:-.01em}
+.logo-text{color:var(--paper)}
+.logo-y{color:var(--amber)}
+.logo-text small{display:block;text-transform:uppercase;margin-top:3px;font:500 .62rem var(--f-mono);letter-spacing:.2em;color:var(--muted)}
+.top-right{display:flex;align-items:center;gap:8px}
+nav.links{display:flex;gap:2px;flex-wrap:wrap}
+nav.links a{text-decoration:none;font-weight:600;font-size:.92rem;padding:.5em .75em;border-radius:999px;color:var(--muted)}
+nav.links a:hover{color:var(--paper);background:var(--ink-3)}
+nav.links a.cta{color:var(--on-amber);background:var(--amber)}
+.lang{display:flex;border:1.5px solid var(--ink-3);border-radius:999px;padding:2px}
+.lang button{font:500 .75rem var(--f-mono);letter-spacing:.06em;border:0;background:transparent;color:var(--muted);padding:.45em .7em;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+@media (max-width:860px){nav.links a:not(.cta){display:none}}
+@media (max-width:380px){.logo-text small{display:none}}
+
+/* hero */
+.hero{padding-block:clamp(48px,9vw,110px) clamp(40px,7vw,80px);position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--ink)}
+.hero-bg video{width:100%;height:100%;object-fit:cover;display:block}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,17,16,.93) 0%,rgba(18,17,16,.72) 55%,rgba(18,17,16,.5) 100%),linear-gradient(0deg,var(--ink) 0%,rgba(18,17,16,0) 28%)}
+@media (max-width:820px){.hero-bg::after{background:linear-gradient(180deg,rgba(18,17,16,.6) 0%,rgba(18,17,16,.82) 55%,var(--ink) 100%)}}
+.hero > .wrap{position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,5vw,64px);align-items:center}
+.hero h1{font-size:clamp(3rem,8.5vw,6.2rem);font-weight:800;line-height:.98;letter-spacing:-.03em;margin-top:14px}
+.hero h1 .y{color:var(--amber)}
+.hero .lead{margin-top:20px;font-size:1.08rem}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.sign{background:var(--amber);color:var(--on-amber);border-radius:14px;padding:22px;transform:rotate(-2deg);box-shadow:0 20px 50px -20px #000;max-width:100%}
+.sign-inner{border:2.5px solid var(--on-amber);border-radius:8px;padding:18px 18px 16px}
+.sign .k{font:500 .7rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase}
+.sign .street{font:900 clamp(2.4rem,6vw,3.4rem)/.95 var(--f-logo);text-transform:lowercase;margin-top:6px}
+.sign ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:6px;font-weight:700}
+.sign li{display:flex;justify-content:space-between;gap:12px;border-top:1.5px dashed #14121055;padding-top:6px}
+.sign li a{text-decoration:none}
+.sign li a:hover{text-decoration:underline}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr}.sign{transform:rotate(-1deg)}}
+
+section.band{padding-block:clamp(56px,8vw,96px);border-top:1px solid var(--ink-3)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 32px;margin-bottom:36px}
+.sec-head > div{display:grid;gap:10px;min-width:0}
+
+/* şubeler */
+.branches{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:960px){.branches{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.branches{grid-template-columns:1fr}}
+.branch{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.photo{aspect-ratio:4/3;max-width:100%;position:relative;background:repeating-linear-gradient(135deg,#1f1d19 0 14px,#24221d 14px 28px);display:grid;place-items:center;color:var(--muted)}
+.photo img,.photo video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.photo .ph-label{font:500 .78rem var(--f-mono);text-align:center;padding:0 16px}
+.photo .tag{position:absolute;left:14px;top:14px;max-width:calc(100% - 110px);line-height:1.05;background:var(--amber);color:var(--on-amber);font:800 1rem var(--f-display);text-transform:uppercase;letter-spacing:.06em;padding:.3em .7em;border-radius:6px}
+.photo .stars-pill{position:absolute;right:14px;top:14px;background:var(--ink);color:var(--paper);font:500 .8rem var(--f-mono);padding:.35em .7em;border-radius:999px}
+.photo .stars-pill b{color:var(--amber)}
+.branch-body{padding:20px;display:grid;gap:14px;flex:1;align-content:start}
+.meta{display:grid;gap:8px;font-size:.94rem;margin:0}
+.meta div{display:grid;grid-template-columns:78px 1fr;gap:10px}
+.meta dt{color:var(--muted);font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;padding-top:.2em}
+.meta dd{margin:0;min-width:0}
+.open-now{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--muted)}
+.open-now i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.open-now.is-open{color:var(--ok)}.open-now.is-open i{background:var(--ok)}
+.feats{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}
+.feats li{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;padding:.35em .7em;border-radius:999px;background:var(--ink-3);color:var(--paper)}
+.feats svg{width:14px;height:14px;flex:none;stroke:var(--amber);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.branch-actions{display:flex;flex-wrap:wrap;gap:8px;padding:0 20px 20px}
+.branch-actions .btn{font-size:.85rem;padding:.6em 1em}
+
+/* özellik filtresi */
+.filter{display:grid;gap:12px;margin:-8px 0 24px;padding:18px 20px;border:1px solid var(--ink-3);border-radius:16px;background:var(--ink-2)}
+.filter .feats li{font-size:.85rem;padding:.45em .85em}
+.filter span{font:500 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.chip{font:600 .82rem var(--f-body);padding:.45em .9em;border-radius:999px;border:1.5px solid var(--ink-3);background:transparent;color:var(--muted);cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
+.branch.dim{opacity:.35}
+
+/* menü */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.tab{font:600 .92rem var(--f-body);padding:.6em 1.1em;border-radius:999px;border:1.5px solid var(--ink-3);background:transparent;color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--amber);border-color:var(--amber);color:var(--on-amber)}
+.tab:hover:not([aria-selected="true"]){color:var(--paper);border-color:var(--muted)}
+.menu-list{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+@media (max-width:760px){.menu-list{grid-template-columns:1fr}}
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 0;border-bottom:1px dashed var(--ink-3);min-width:0}
+.item h4{margin:0;font:700 1.05rem var(--f-body)}
+.item p{grid-column:1/-1;color:var(--muted);font-size:.9rem}
+.price{font-family:var(--f-mono);font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;white-space:nowrap}
+.menu-note{margin-top:20px;color:var(--muted);font-size:.85rem}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:860px){.menu-grid{grid-template-columns:1fr}}
+.menu-card{display:grid;gap:14px;align-content:space-between;background:var(--amber);color:var(--on-amber);border-radius:18px;padding:clamp(20px,3vw,28px);text-decoration:none;min-width:0;transition:transform .2s}
+.menu-card:hover{transform:translateY(-3px)}
+.menu-card .k{font:500 .72rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase}
+.menu-card h3{font-size:clamp(1.7rem,3.4vw,2.2rem)}
+.menu-card .go{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;background:var(--on-amber);color:var(--amber);font-weight:700;padding:.8em 1.2em;border-radius:999px}
+.menu-card.soon{background:var(--ink-2);color:var(--muted);border:1.5px dashed var(--ink-3);cursor:default}
+.menu-card.soon:hover{transform:none}
+.menu-card.soon h3{color:var(--paper)}
+.menu-card.soon .go{background:var(--ink-3);color:var(--muted)}
+
+/* yorumlar */
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:900px){.reviews{grid-template-columns:1fr}}
+.rev-card{border:1px solid var(--ink-3);border-radius:16px;padding:22px;display:grid;gap:16px;align-content:start;min-width:0}
+.rev-top{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.score{font:900 3.4rem/.9 var(--f-display);color:var(--amber);font-variant-numeric:tabular-nums}
+.score small{font:500 .78rem var(--f-mono);color:var(--muted);display:block;letter-spacing:.04em;margin-top:6px}
+.stars{display:flex;gap:2px}
+.stars svg{width:16px;height:16px}
+.quote{border-top:1px solid var(--ink-3);padding-top:14px;display:grid;gap:6px}
+.quote p{font-size:.94rem}
+.quote cite{font-style:normal;font:500 .75rem var(--f-mono);color:var(--muted);letter-spacing:.04em}
+
+/* hikâye */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,6vw,72px);align-items:start}
+@media (max-width:860px){.story{grid-template-columns:1fr}}
+.story-text{display:grid;gap:18px;font-size:1.05rem;max-width:62ch}
+.story-text p:first-of-type::first-letter{font:900 3.6rem/.8 var(--f-display);color:var(--amber);float:left;margin:.08em .12em 0 0}
+.timeline{list-style:none;padding:0;margin:0;display:grid;border-left:2px solid var(--ink-3)}
+.timeline li{position:relative;padding:0 0 26px 24px;display:grid;gap:4px}
+.timeline li::before{content:"";position:absolute;left:-7px;top:.45em;width:12px;height:12px;border-radius:50%;background:var(--ink);border:2px solid var(--amber)}
+.timeline .yr{font:800 1.5rem/1 var(--f-display);color:var(--amber)}
+.timeline p{color:var(--muted);font-size:.94rem}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+@media (max-width:760px){.values{grid-template-columns:1fr}}
+.value{background:var(--ink-2);border-radius:14px;padding:20px;display:grid;gap:8px}
+.value h3{font-size:1.35rem}
+.value p{color:var(--muted);font-size:.92rem}
+
+/* rezervasyon */
+.res-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(24px,5vw,56px);align-items:start}
+@media (max-width:860px){.res-grid{grid-template-columns:1fr}}
+.steps{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:14px}
+.steps li{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;color:var(--muted)}
+.steps b{width:32px;height:32px;border-radius:50%;background:var(--amber-soft);color:var(--amber);display:grid;place-items:center;font:500 .85rem var(--f-mono)}
+form.res{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:18px;padding:clamp(18px,4vw,30px);display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:520px){form.res{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:.82rem;font-weight:600;color:var(--muted)}
+input,select,textarea{font:500 1rem var(--f-body);color:var(--paper);background:var(--ink);border:1.5px solid var(--ink-3);border-radius:10px;padding:.75em .85em;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber)}
+textarea{resize:vertical;min-height:84px}
+.err{color:#ff9b85;font-size:.8rem;min-height:1em}
+.party{display:flex;align-items:center;gap:8px}
+.party button{width:44px;height:44px;flex:none;border-radius:10px;border:1.5px solid var(--ink-3);background:var(--ink);color:var(--paper);font:700 1.2rem var(--f-body);cursor:pointer}
+.party button:hover{border-color:var(--amber)}
+.party input{text-align:center;font-family:var(--f-mono)}
+.form-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.form-foot small{color:var(--muted);max-width:42ch}
+.result{grid-column:1/-1;border:1.5px solid var(--amber);border-radius:12px;padding:16px;display:grid;gap:12px;background:var(--amber-soft)}
+.result pre{margin:0;white-space:pre-wrap;font:400 .88rem/1.55 var(--f-mono);color:var(--paper)}
+.result .row{display:flex;flex-wrap:wrap;gap:8px}
+
+/* iletişim */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.contact{border:1px solid var(--ink-3);border-radius:16px;padding:20px;display:grid;gap:12px;min-width:0}
+.contact h3{color:var(--amber)}
+.line{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid var(--ink-3)}
+.line span{min-width:0;overflow-wrap:anywhere}
+.line small{display:block;color:var(--muted);font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+.copy{flex:none;font:600 .78rem var(--f-body);padding:.45em .8em;border-radius:999px;border:1.5px solid var(--ink-3);background:transparent;color:var(--paper);cursor:pointer;text-decoration:none}
+.copy:hover{border-color:var(--amber)}
+
+footer{border-top:1px solid var(--ink-3);padding-block:32px;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--paper);color:var(--ink);font-weight:600;padding:.7em 1.2em;border-radius:999px;z-index:30;box-shadow:0 10px 30px -10px #000}
+
+/* animasyonlar */
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hero .anim{animation:up .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0s)}
+@keyframes dropin{from{opacity:0;transform:translateY(-36px) rotate(-9deg)}to{opacity:1;transform:rotate(-2deg)}}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(-.6deg)}}
+.sign{transform-origin:50% 0;animation:dropin .9s .45s cubic-bezier(.3,1.35,.5,1) both,sway 6s 1.4s ease-in-out infinite}
+.hero h1 .y{position:relative;display:inline-block}
+.steam{position:absolute;left:50%;bottom:88%;display:flex;gap:.14em;transform:translateX(-50%);pointer-events:none}
+.steam i{display:block;width:.07em;height:.42em;border-radius:99px;background:linear-gradient(to top,rgba(243,239,230,.7),rgba(243,239,230,0));opacity:0;filter:blur(1.5px);animation:steam 3s ease-in-out infinite}
+.steam i:nth-child(2){animation-delay:.9s;height:.5em}
+.steam i:nth-child(3){animation-delay:1.8s}
+@keyframes steam{0%{opacity:0;transform:translateY(12px) scaleY(.6)}35%{opacity:.75}100%{opacity:0;transform:translate(7px,-26px) scaleY(1.25)}}
+.ticker{background:var(--amber);color:var(--on-amber);overflow:hidden;position:relative;z-index:1}
+.ticker-track{display:flex;width:max-content;animation:tick 38s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker span{display:inline-flex;align-items:center;gap:22px;padding:14px 0 14px 22px;font:700 1.1rem var(--f-display);white-space:nowrap}
+.ticker span::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--on-amber)}
+@keyframes tick{to{transform:translateX(-50%)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.branch{transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.branch:hover{transform:translateY(-5px);border-color:var(--amber);box-shadow:0 18px 40px -22px #000}
+.photo img,.photo video{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.branch:hover .photo img,.branch:hover .photo video{transform:scale(1.05)}
+.photo{overflow:hidden}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(127,201,143,.65)}70%{box-shadow:0 0 0 9px rgba(127,201,143,0)}100%{box-shadow:0 0 0 0 rgba(127,201,143,0)}}
+.open-now.is-open i{animation:pulse 2s infinite}
+.btn-solid{position:relative;overflow:hidden}
+.btn-solid::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s ease}
+.btn-solid:hover::after{transform:translateX(120%)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#ust" aria-label="Backstreet Cafe">
+      <span class="logo-text">Back<span class="logo-y">street</span><small>CAFE</small></span>
+    </a>
+    <div class="top-right">
+      <nav class="links" aria-label="Sections">
+        <a href="#subeler" data-i18n="nav.branches">Şubeler</a>
+        <a href="#menu" data-i18n="nav.menu">Menü</a>
+        <a href="#iletisim" data-i18n="nav.contact">İletişim</a>
+        <a href="#rezervasyon" class="cta" data-i18n="nav.book">Rezervasyon</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Dil / Language">
+        <button type="button" id="lang-tr" data-lang="tr" aria-pressed="true">TR</button>
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="ust">
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"><video id="heroVid" src="vid/gunesli.mp4" poster="vid/gunesli-poster.jpg" autoplay muted loop playsinline preload="auto"></video></div>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow anim" style="--d:.05s" data-i18n="hero.eyebrow">Kahve · Yemek · Tatlı · 3 şube</p>
+        <h1 class="anim" style="--d:.15s" data-i18n-html="hero.title">Günün her<br>anında bir<br><span class="y">mola.<span class="steam" aria-hidden="true"><i></i><i></i><i></i></span></span></h1>
+        <p class="lead anim" style="--d:.3s" data-i18n="hero.lead">Taze çekilmiş espresso, yavaş demlenmiş filtre kahve ve oturup kalmak isteyeceğin bir masa. Sana en yakın Backstreet'i seç, menüye göz at, yerini ayırt.</p>
+        <div class="hero-actions anim" style="--d:.42s">
+          <a class="btn btn-solid" href="#rezervasyon" data-i18n="hero.book">Masa ayırt</a>
+          <a class="btn btn-ghost" href="#menu" data-i18n="hero.menu">Menüyü gör</a>
+        </div>
+      </div>
+      <aside class="sign">
+        <div class="sign-inner">
+          <div class="k" data-i18n="hero.sign">Yön tabelası</div>
+          <div class="street">Backstreet</div>
+          <ul id="signList"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
+
+  <section class="band" id="subeler">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-i18n="nav.branches">Şubeler</p>
+          <h2 data-i18n="br.title">Hangi sokaktasın?</h2>
+        </div>
+        <p class="lead" data-i18n="br.lead">Üç şubemizde de aynı rahatlık var. Açık/kapalı bilgisi şu anki saate göre gösteriliyor.</p>
+      </div>
+      <div class="filter" id="filter"></div>
+      <div class="branches" id="branches"></div>
+    </div>
+  </section>
+
+  <section class="band" id="menu">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-i18n="nav.menu">Menü</p>
+          <h2 data-i18n="menu.title">Bugün ne içiyoruz?</h2>
+        </div>
+        <p class="lead" data-i18n="menu.lead">Tüm şubelerde aynı menü. Bitki bazlı süt seçeneği her içecekte var.</p>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <section class="band" id="rezervasyon">
+    <div class="wrap res-grid">
+      <div>
+        <p class="eyebrow" data-i18n="nav.book">Rezervasyon</p>
+        <h2 style="margin-top:10px" data-i18n="res.title">Masan hazır olsun.</h2>
+        <p class="lead" style="margin-top:16px" data-i18n="res.lead">Formu doldur, talebin seçtiğin şubenin WhatsApp hattına hazır mesaj olarak gider. Şube onayladığında rezervasyonun kesinleşir.</p>
+        <ol class="steps">
+          <li><b>1</b><span data-i18n="res.s1">Şubeyi, günü, saati ve kişi sayısını seç.</span></li>
+          <li><b>2</b><span data-i18n="res.s2">"WhatsApp'tan gönder"e bas, mesaj hazır açılır.</span></li>
+          <li><b>3</b><span data-i18n="res.s3">Şube sana dönüp onaylar.</span></li>
+        </ol>
+      </div>
+      <form class="res" id="resForm" novalidate>
+        <div class="field full">
+          <label for="r-branch" data-i18n="res.branch">Şube</label>
+          <select id="r-branch" required></select>
+        </div>
+        <div class="field">
+          <label for="r-name" data-i18n="res.name">Ad soyad</label>
+          <input id="r-name" autocomplete="name" data-i18n-ph="res.nameph" placeholder="Ayşe Yılmaz" required>
+          <span class="err" data-for="r-name"></span>
+        </div>
+        <div class="field">
+          <label for="r-phone" data-i18n="res.phone">Telefon</label>
+          <input id="r-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="05xx xxx xx xx" required>
+          <span class="err" data-for="r-phone"></span>
+        </div>
+        <div class="field">
+          <label for="r-date" data-i18n="res.date">Tarih</label>
+          <input id="r-date" type="date" required>
+          <span class="err" data-for="r-date"></span>
+        </div>
+        <div class="field">
+          <label for="r-time" data-i18n="res.time">Saat</label>
+          <select id="r-time" required></select>
+          <span class="err" data-for="r-time"></span>
+        </div>
+        <div class="field full">
+          <label for="r-party" data-i18n="res.party">Kişi sayısı</label>
+          <div class="party">
+            <button type="button" id="p-minus" aria-label="−1">−</button>
+            <input id="r-party" type="number" min="1" max="20" value="2" inputmode="numeric">
+            <button type="button" id="p-plus" aria-label="+1">+</button>
+          </div>
+        </div>
+        <div class="field full">
+          <label for="r-note" data-i18n="res.note">Not (isteğe bağlı)</label>
+          <textarea id="r-note" data-i18n-ph="res.noteph" placeholder="Doğum günü, cam kenarı, bebek arabası..."></textarea>
+        </div>
+        <div class="form-foot">
+          <small data-i18n="res.big">8 kişiden kalabalık gruplar için şubeyi aramanı öneririz.</small>
+          <button class="btn btn-solid" type="submit" data-i18n="res.submit">Rezervasyon talebini hazırla</button>
+        </div>
+        <div class="result" id="result" hidden aria-live="polite">
+          <strong data-i18n="res.ready">Talebin hazır. Göndermek için aşağıdaki butona bas.</strong>
+          <pre id="resText"></pre>
+          <div class="row">
+            <a class="btn btn-solid" id="waLink" href="#" target="_blank" rel="noopener" data-i18n="res.wa">WhatsApp'tan gönder</a>
+            <button class="btn btn-ghost" type="button" id="copyRes" data-i18n="res.copy">Metni kopyala</button>
+          </div>
+          <small style="color:var(--muted)" data-i18n="res.fallback">WhatsApp açılmazsa metni kopyalayıp şubenin numarasına kendin gönderebilirsin.</small>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="band" id="iletisim">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-i18n="nav.contact">İletişim</p>
+          <h2 data-i18n="ct.title">Şubeye doğrudan ulaş.</h2>
+        </div>
+        <p class="lead" data-i18n="ct.lead">Grup rezervasyonu, kayıp eşya ya da sadece "bugün açık mısınız?" sorusu için.</p>
+      </div>
+      <div class="contact-grid" id="contacts"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Backstreet Cafe</span>
+    <span>Instagram: <a href="https://www.instagram.com/backstreetcafee/" target="_blank" rel="noopener">@backstreetcafee</a></span>
+  </div>
+</footer>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ==== BURAYI DOLDUR: tüm gerçek bilgiler tek yerde ==== */
+/* tüm şubelerde ortak imkânlar. Seçenekler: wifi, power, laptop, garden, smoking, pets, kids, card, takeaway, plantmilk, games, ac, late, parking, access */
+const FEATURES = ["wifi","power","laptop","garden","smoking","pets","kids","card","takeaway","plantmilk","games","ac"];
+const BRANCHES = [
+  { id:"s1", name:"105 Backstreet", district:"105 Plaza", address:"15 Temmuz, Gülbahar Cd. 1506. Sokak, 34204 Bağcılar/İstanbul",
+    phone:"0552 446 76 23", whatsapp:"905524467623", email:"105plaza@ornek.com",
+    hours:{ open:"08:00", close:"01:00" }, hoursText:{tr:"Her gün 08:00 – 01:00",en:"Daily 08:00 – 01:00"},
+    mapQuery:"Backstreet Cafe", mapLink:"https://share.google/aTvR98iKQdNYKcXit", photo:"img/105-plaza.jpg", photoPos:"50% 42%", menuUrl:"https://qr1.tabpadmenu.com/backstreet105",
+    features:FEATURES,
+    rating:4.8, ratingCount:0, reviewsUrl:"https://share.google/aTvR98iKQdNYKcXit",
+    reviews:[{author:"Misafir adı",text:{tr:"Gerçek Google yorumu buraya gelecek.",en:"A real Google review will go here."}}] },
+  { id:"s2", name:"Güneşli Back Street", district:"Güneşli Meydan", address:"Hürriyet, Cumhuriyet Cd. No: 21/D, 34212 Bağcılar/İstanbul",
+    phone:"0532 714 71 07", whatsapp:"905327147107", email:"gunesli@ornek.com",
+    hours:{ open:"08:00", close:"01:00" }, hoursText:{tr:"Her gün 08:00 – 01:00",en:"Daily 08:00 – 01:00"},
+    mapQuery:"Backstreet Cafe", mapLink:"https://maps.app.goo.gl/MLLwAvqks8uuuM5x5", photo:"vid/gunesli-poster.jpg", video:"vid/gunesli.mp4", menuUrl:"",
+    features:FEATURES,
+    rating:4.7, ratingCount:0, reviewsUrl:"https://maps.app.goo.gl/MLLwAvqks8uuuM5x5",
+    reviews:[{author:"Misafir adı",text:{tr:"Gerçek Google yorumu buraya gelecek.",en:"A real Google review will go here."}}] },
+  { id:"s3", name:"Oasis Cadde Backstreet", district:"Oasis Cadde", address:"",
+    phone:"0535 644 35 89", whatsapp:"905356443589", email:"oasis@ornek.com",
+    hours:{ open:"08:00", close:"01:00" }, hoursText:{tr:"Her gün 08:00 – 01:00",en:"Daily 08:00 – 01:00"},
+    mapQuery:"Backstreet Cafe", mapLink:"https://share.google/hWqAAJNlcuhGZRtPh", photo:"vid/oasis-poster.jpg", video:"vid/oasis.mp4", menuUrl:"https://qr1.tabpadmenu.com/back-street",
+    features:FEATURES,
+    rating:4.9, ratingCount:0, reviewsUrl:"https://share.google/hWqAAJNlcuhGZRtPh",
+    reviews:[{author:"Misafir adı",text:{tr:"Gerçek Google yorumu buraya gelecek.",en:"A real Google review will go here."}}] }
+];
+/* MENU artık kullanılmıyor: her şubenin menüsü BRANCHES içindeki menuUrl linkine gidiyor */
+const MENU = [
+  { cat:{tr:"Sıcak kahveler",en:"Hot coffee"}, items:[
+    ["Espresso",{tr:"Tek shot, 30 ml",en:"Single shot, 30 ml"},70],
+    ["Americano",{tr:"Espresso ve sıcak su, 350 ml",en:"Espresso and hot water, 350 ml"},95],
+    ["Flat White",{tr:"Çift shot, ince süt köpüğü, 240 ml",en:"Double shot, silky microfoam, 240 ml"},120],
+    ["Cappuccino",{tr:"Espresso, süt ve kalın köpük, 300 ml",en:"Espresso, milk and thick foam, 300 ml"},115],
+    ["Caffè Latte",{tr:"Espresso ve bol süt, 350 ml",en:"Espresso with plenty of milk, 350 ml"},120],
+    [{tr:"Filtre kahve",en:"Filter coffee"},{tr:"Günün çekirdeği, V60 ile, 300 ml",en:"Bean of the day, V60, 300 ml"},100],
+    [{tr:"Türk kahvesi",en:"Turkish coffee"},{tr:"Közde, lokumla",en:"Cooked on embers, with Turkish delight"},80],
+    ["Mocha",{tr:"Espresso, bitter çikolata, süt",en:"Espresso, dark chocolate, milk"},130]]},
+  { cat:{tr:"Soğuk içecekler",en:"Cold drinks"}, items:[
+    ["Iced Americano",{tr:"Buzlu espresso ve su, 400 ml",en:"Espresso and water over ice, 400 ml"},105],
+    ["Iced Latte",{tr:"Buzlu espresso ve süt, 400 ml",en:"Espresso and milk over ice, 400 ml"},125],
+    ["Cold Brew",{tr:"18 saat soğuk demleme",en:"Steeped cold for 18 hours"},130],
+    ["Backstreet Frappe",{tr:"Karamel, espresso, buz",en:"Caramel, espresso, ice"},145],
+    [{tr:"Limonata",en:"Lemonade"},{tr:"Ev yapımı, taze nane",en:"Homemade, fresh mint"},90],
+    [{tr:"Soğuk çay",en:"Iced tea"},{tr:"Şeftalili, şekersiz",en:"Peach, unsweetened"},85]]},
+  { cat:{tr:"Çay & diğer",en:"Tea & more"}, items:[
+    [{tr:"Demlik çay",en:"Turkish tea pot"},{tr:"İki kişilik",en:"Serves two"},90],
+    [{tr:"Bitki çayları",en:"Herbal teas"},{tr:"Ihlamur, papatya, adaçayı",en:"Linden, chamomile, sage"},85],
+    [{tr:"Sıcak çikolata",en:"Hot chocolate"},{tr:"Bitter, 300 ml",en:"Dark, 300 ml"},115],
+    ["Chai Latte",{tr:"Baharatlı çay ve süt",en:"Spiced tea and milk"},120]]},
+  { cat:{tr:"Tatlı & atıştırmalık",en:"Sweets & bites"}, items:[
+    ["San Sebastian",{tr:"Günlük, dilim",en:"Baked daily, per slice"},165],
+    ["Brownie",{tr:"Fındıklı, sıcak servis",en:"With hazelnuts, served warm"},120],
+    [{tr:"Kruvasan",en:"Croissant"},{tr:"Tereyağlı",en:"All butter"},85],
+    [{tr:"Tost",en:"Toastie"},{tr:"Kaşarlı ya da karışık",en:"Cheese or mixed"},140],
+    [{tr:"Kurabiye",en:"Cookie"},{tr:"Çikolata parçacıklı",en:"Chocolate chip"},60],
+    [{tr:"Granola kase",en:"Granola bowl"},{tr:"Yoğurt, mevsim meyvesi, bal",en:"Yogurt, seasonal fruit, honey"},150]]}
+];
+const STORY = {
+  timeline:[
+    {yr:"20XX",tr:"İlk Backstreet, küçük bir arka sokakta açıldı.",en:"The first Backstreet opened on a quiet back street."},
+    {yr:"20XX",tr:"İkinci şube ve kendi kavurduğumuz ilk çekirdek.",en:"Second branch and our first house-roasted beans."},
+    {yr:"20XX",tr:"Üçüncü şube açıldı.",en:"Our third branch opened."}
+  ],
+  values:[
+    {tr:["Taze çekim","Her bardak için çekirdek o an çekilir."],en:["Ground to order","Beans are ground fresh for every cup."]},
+    {tr:["Acele yok","Laptopunla gel, istediğin kadar kal."],en:["No rush","Bring your laptop, stay as long as you like."]},
+    {tr:["Mahalle kafesi","Seni ikinci gelişinde adınla karşılarız."],en:["Neighbourhood café","By your second visit, we know your name."]}
+  ]
+};
+/* ==================================================== */
+
+const T = {
+  tr:{
+    "nav.branches":"Şubeler","nav.menu":"Menü","nav.story":"Hikâyemiz","nav.contact":"İletişim","nav.book":"Rezervasyon",
+    "hero.eyebrow":"Kahve · Yemek · Tatlı · 3 şube","hero.title":'Günün her<br>anında bir<br><span class="y">mola.<span class="steam" aria-hidden="true"><i></i><i></i><i></i></span></span>',
+    "hero.lead":"Taze çekilmiş kahve kokusu, doyurucu yemekler, tanıdık yüzler ve kalkmak istemeyeceğin bir masa. Üç şubemizden sana en yakın olanı seç, seni bekliyoruz.",
+    "hero.book":"Masa ayırt","hero.menu":"Menüyü gör","hero.sign":"Şubelerimiz",
+    "br.title":"Hangi sokaktasın?","br.lead":"Üç şubemizde de aynı rahatlık var. Açık/kapalı bilgisi şu anki saate göre gösteriliyor.",
+    "br.filter":"Tüm şubelerimizde","br.address":"Adres","br.hours":"Saat","br.phone":"Telefon","br.open":"Şu an açık","br.closed":"Şu an kapalı",
+    "br.photo":"ŞUBE FOTOĞRAFI<br>buraya gelecek","br.map":"Haritada aç","br.bookhere":"Bu şubeye rezervasyon",
+    "f.wifi":"Wi-Fi","f.power":"Priz","f.garden":"Açık oturma alanı","f.smoking":"Sigara alanı","f.pets":"Evcil hayvan dostu","f.parking":"Otopark","f.laptop":"Çalışmaya uygun","f.access":"Engelli erişimi","f.kids":"Çocuk dostu","f.card":"Kartla ödeme","f.takeaway":"Paket servis","f.plantmilk":"Bitkisel süt","f.games":"Kutu oyunları","f.ac":"Klima","f.late":"Gece 01:00'e kadar açık",
+    "menu.title":"Bugün ne içiyoruz?","menu.lead":"Her şubemizin menüsü kendine özel. Şubeni seç, güncel menü ve fiyatlar açılsın.","menu.soon":"Menü yakında","br.menu":"Menüyü gör","menu.cardt":"Güncel menü ve fiyatlar","menu.cardp":"Kahveler, soğuk içecekler, tatlılar ve atıştırmalıklar. Dijital menü yeni sekmede açılır.","menu.open":"Menüyü aç","menu.ph":"MENÜ LİNKLERİ · her şubenin linki gelince açılacak",
+    "rev.eyebrow":"Google yorumları","rev.title":"Misafirlerimiz ne diyor?","rev.lead":"Puanlar ve yorumlar Google Haritalar'dan.","rev.ph":"ÖRNEK · gerçek puan ve yorumlar gelecek","rev.count":"Google puanı","rev.all":"Tüm yorumlar","rev.write":"Yorum yaz",
+    "story.title":"Bir arka sokakta başladı.","story.ph":"TASLAK METİN · gerçek hikâyenle değişecek",
+    "story.p1":"Backstreet, kalabalık caddelerin bir sokak arkasında, insanların acele etmeden kahve içebileceği bir yer olsun diye açıldı. İlk günden beri derdimiz aynı: iyi çekirdek, doğru demleme ve seni adınla karşılayan bir ekip.",
+    "story.p2":"Bugün üç şubemiz var ama hepsinde aynı kural geçerli. Kahve taze çekilir, süt el ile köpürtülür, masadan kalkmak için kimse seni acele ettirmez.",
+    "story.p3":"Çekirdeklerimizi düzenli olarak seçip kavuruyoruz. Hangi çekirdeğin bardağında olduğunu merak edersen baristamıza sorman yeterli.",
+    "res.title":"Masan hazır olsun.","res.lead":"Formu doldur, talebin seçtiğin şubenin WhatsApp hattına hazır mesaj olarak gider. Şube onayladığında rezervasyonun kesinleşir.",
+    "res.s1":"Şubeyi, günü, saati ve kişi sayısını seç.","res.s2":"\"WhatsApp'tan gönder\"e bas, mesaj hazır açılır.","res.s3":"Şube sana dönüp onaylar.",
+    "res.branch":"Şube","res.name":"Ad soyad","res.nameph":"Ayşe Yılmaz","res.phone":"Telefon","res.date":"Tarih","res.time":"Saat","res.party":"Kişi sayısı",
+    "res.note":"Not (isteğe bağlı)","res.noteph":"Doğum günü, cam kenarı, bebek arabası...","res.big":"8 kişiden kalabalık gruplar için şubeyi aramanı öneririz.",
+    "res.submit":"Rezervasyon talebini hazırla","res.ready":"Talebin hazır. Göndermek için aşağıdaki butona bas.","res.wa":"WhatsApp'tan gönder","res.copy":"Metni kopyala",
+    "res.fallback":"WhatsApp açılmazsa metni kopyalayıp şubenin numarasına kendin gönderebilirsin.","res.notime":"Bugün için uygun saat kalmadı",
+    "err.name":"Adını yaz ki şube seni tanısın.","err.phone":"Telefonu 10-11 hane olarak yaz.","err.date":"Bir gün seç.","err.time":"Başka bir gün seç, bugünün saatleri doldu.",
+    "msg.hello":"Merhaba, {b} şubeniz için rezervasyon talebim var:","msg.name":"Ad","msg.phone":"Telefon","msg.date":"Tarih","msg.time":"Saat","msg.party":"Kişi","msg.note":"Not",
+    "ct.title":"Şubeye doğrudan ulaş.","ct.lead":"Grup rezervasyonu, kayıp eşya ya da sadece \"bugün açık mısınız?\" sorusu için.",
+    "ct.phone":"Telefon","ct.email":"E-posta","ct.address":"Adres","ct.copy":"Kopyala","ct.write":"Yaz","ct.route":"Yol tarifi",
+    "tick":["Taze çekilmiş kahve","Doyurucu yemekler","Tatlı molası","Maç keyfi","Arkadaş sohbeti","Her gün 08:00 – 01:00","3 şube, aynı lezzet"],"t.copied":"Kopyalandı","t.nocopy":"Kopyalanamadı, metni elle seç"
+  },
+  en:{
+    "nav.branches":"Locations","nav.menu":"Menu","nav.story":"Our story","nav.contact":"Contact","nav.book":"Book a table",
+    "hero.eyebrow":"Coffee · Food · Desserts · 3 locations","hero.title":'A break for<br>every<br><span class="y">moment.<span class="steam" aria-hidden="true"><i></i><i></i><i></i></span></span>',
+    "hero.lead":"The smell of freshly ground coffee, hearty food, familiar faces and a table you won't want to leave. Pick the location nearest you, we're waiting for you.",
+    "hero.book":"Book a table","hero.menu":"See the menu","hero.sign":"Our locations",
+    "br.title":"Which street are you on?","br.lead":"The same comfort at all three locations. Open/closed is based on the current time.",
+    "br.filter":"At every location","br.address":"Address","br.hours":"Hours","br.phone":"Phone","br.open":"Open now","br.closed":"Closed now",
+    "br.photo":"LOCATION PHOTO<br>coming soon","br.map":"Open in Maps","br.bookhere":"Book at this location",
+    "f.wifi":"Wi-Fi","f.power":"Power outlets","f.garden":"Outdoor seating","f.smoking":"Smoking area","f.pets":"Pet friendly","f.parking":"Parking","f.laptop":"Good for working","f.access":"Wheelchair access","f.kids":"Kid friendly","f.card":"Card payment","f.takeaway":"Takeaway","f.plantmilk":"Plant-based milk","f.games":"Board games","f.ac":"Air conditioning","f.late":"Open until 01:00",
+    "menu.title":"What are we drinking today?","menu.lead":"Each location has its own menu. Pick yours to see current items and prices.","menu.soon":"Menu coming soon","br.menu":"See the menu","menu.cardt":"Current menu and prices","menu.cardp":"Coffee, cold drinks, desserts and bites. The digital menu opens in a new tab.","menu.open":"Open the menu","menu.ph":"MENU LINKS · each location's link coming",
+    "rev.eyebrow":"Google reviews","rev.title":"What our guests say","rev.lead":"Ratings and reviews from Google Maps.","rev.ph":"SAMPLE · real ratings and reviews coming","rev.count":"Google rating","rev.all":"All reviews","rev.write":"Write a review",
+    "story.title":"It started on a back street.","story.ph":"DRAFT TEXT · to be replaced with your story",
+    "story.p1":"Backstreet opened one street behind the busy roads, as a place where people could drink coffee without hurrying. Since day one we've cared about the same things: good beans, careful brewing and a team that greets you by name.",
+    "story.p2":"Today we have three locations, and the same rule applies in all of them. Coffee is ground fresh, milk is steamed by hand, and nobody rushes you out of your seat.",
+    "story.p3":"We select and roast our beans regularly. If you're curious about what's in your cup, just ask the barista.",
+    "res.title":"Your table, ready.","res.lead":"Fill in the form and your request opens as a ready-made WhatsApp message to the location you chose. Your booking is confirmed once they reply.",
+    "res.s1":"Choose the location, day, time and party size.","res.s2":"Tap \"Send on WhatsApp\" and the message opens ready to go.","res.s3":"The location replies to confirm.",
+    "res.branch":"Location","res.name":"Full name","res.nameph":"Jane Smith","res.phone":"Phone","res.date":"Date","res.time":"Time","res.party":"Party size",
+    "res.note":"Note (optional)","res.noteph":"Birthday, window seat, stroller...","res.big":"For groups larger than 8, please call the location.",
+    "res.submit":"Prepare booking request","res.ready":"Your request is ready. Tap the button below to send it.","res.wa":"Send on WhatsApp","res.copy":"Copy text",
+    "res.fallback":"If WhatsApp doesn't open, copy the text and send it to the location's number yourself.","res.notime":"No times left today",
+    "err.name":"Add your name so the location knows who's coming.","err.phone":"Enter a phone number with at least 10 digits.","err.date":"Choose a day.","err.time":"Choose another day, today's times are gone.",
+    "msg.hello":"Hello, I'd like to book a table at {b}:","msg.name":"Name","msg.phone":"Phone","msg.date":"Date","msg.time":"Time","msg.party":"Party","msg.note":"Note",
+    "ct.title":"Reach a location directly.","ct.lead":"For group bookings, lost items, or just \"are you open today?\".",
+    "ct.phone":"Phone","ct.email":"Email","ct.address":"Address","ct.copy":"Copy","ct.write":"Message","ct.route":"Directions",
+    "tick":["Freshly ground coffee","Hearty food","Dessert breaks","Match nights","Good company","Daily 08:00 – 01:00","3 locations, same taste"],"t.copied":"Copied","t.nocopy":"Couldn't copy, select the text manually"
+  }
+};
+const ICONS = {
+  wifi:'<path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0"/><circle cx="12" cy="19.5" r=".6"/>',
+  power:'<path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5"/>',
+  garden:'<path d="M12 22V11M12 11c0-4 3-7 7-7 0 4-3 7-7 7zM12 14c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5z"/>',
+  smoking:'<path d="M2 16h15v4H2zM20 16v4M17 7c0-2 2-2 2-4M21 12c0-3-2-4-2-6"/>',
+  pets:'<circle cx="5" cy="10" r="2"/><circle cx="9" cy="5" r="2"/><circle cx="15" cy="5" r="2"/><circle cx="19" cy="10" r="2"/><path d="M7.5 18c0-3 2-6 4.5-6s4.5 3 4.5 6c0 2-2 3-4.5 2.2C9.5 21 7.5 20 7.5 18z"/>',
+  parking:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/>',
+  laptop:'<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/>',
+  access:'<circle cx="12" cy="4" r="1.6"/><path d="M12 7v6h5l2 5M12 10h4M8.5 11.5A5 5 0 1 0 15 19"/>',
+  kids:'<circle cx="12" cy="6" r="3"/><path d="M7 21v-5a5 5 0 0 1 10 0v5M9.5 21v-4M14.5 21v-4"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+  takeaway:'<path d="M6 8h12l-1.5 13h-9zM5 8l1-4h12l1 4M9 12h6"/>',
+  plantmilk:'<path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"/>',
+  games:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1"/><circle cx="16" cy="16" r="1"/><circle cx="12" cy="12" r="1"/>',
+  ac:'<path d="M12 2v20M4 7l16 10M20 7L4 17M9 3l3 2 3-2M9 21l3-2 3 2"/>',
+  late:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'
+};
+const STAR = (fill)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.3l6.6-.8z" fill="${fill}" stroke="var(--amber)" stroke-width="1.2"/></svg>`;
+
+let lang="tr";
+try{ const s=localStorage.getItem("bs-lang"); if(s==="en"||s==="tr")lang=s }catch(e){}
+if(location.hash==="#en")lang="en";
+const t=k=>T[lang][k]??T.tr[k]??k;
+const L=v=>(v&&typeof v==="object")?(v[lang]??v.tr):v;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mapUrl=b=>b.mapLink||"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(b.mapQuery+" "+b.address);
+const toMin=x=>{const[h,m]=x.split(":").map(Number);return h*60+m};
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function isOpen(b){
+  const d=new Date(),now=d.getHours()*60+d.getMinutes();
+  let o=toMin(b.hours.open),c=toMin(b.hours.close); if(c<=o)c+=1440;
+  return (now>=o&&now<c)||(now+1440>=o&&now+1440<c);
+}
+let toastT;
+function toast(msg){const el=$("#toast");el.textContent=msg;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2200)}
+async function copyText(text){
+  try{await navigator.clipboard.writeText(text);toast(t("t.copied"))}catch(e){toast(t("t.nocopy"))}
+}
+
+/* statik metinler */
+function applyStatic(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
+}
+
+/* şubeler + filtre */
+const allFeats=[...new Set(BRANCHES.flatMap(b=>b.features))];
+const active=new Set();
+function featChip(f){return `<li><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[f]||""}</svg>${esc(t("f."+f))}</li>`}
+function renderBranches(){
+  $("#signList").innerHTML=BRANCHES.map(b=>`<li><a href="#subeler">${esc(b.name)}</a><span aria-hidden="true">→</span></li>`).join("");
+  $("#filter").innerHTML=`<span>${esc(t("br.filter"))}</span><ul class="feats">${FEATURES.map(featChip).join("")}</ul>`;
+  $("#branches").innerHTML=BRANCHES.map(b=>{
+    const open=isOpen(b), match=[...active].every(f=>b.features.includes(f));
+    return `<article class="branch${match?"":" dim"}">
+      <div class="photo">
+        ${b.video?`<video src="${esc(b.video)}" poster="${esc(b.photo)}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(b.name)}"></video>`:b.photo?`<img src="${esc(b.photo)}" alt="${esc(b.name)}" loading="lazy" style="object-position:${esc(b.photoPos||"50% 50%")}">`:`<span class="ph-label">${t("br.photo")}</span>`}
+        <span class="tag">${esc(b.name)}</span>
+      </div>
+      <div class="branch-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3>${esc(b.district)}</h3>
+          <span class="open-now ${open?"is-open":""}"><i></i>${esc(t(open?"br.open":"br.closed"))}</span>
+        </div>
+        <dl class="meta">
+          ${b.address?`<div><dt>${esc(t("br.address"))}</dt><dd>${esc(b.address)}</dd></div>`:""}
+          <div><dt>${esc(t("br.hours"))}</dt><dd>${esc(L(b.hoursText))}</dd></div>
+          <div><dt>${esc(t("br.phone"))}</dt><dd style="font-family:var(--f-mono)">${esc(b.phone)}</dd></div>
+        </dl>
+      </div>
+      <div class="branch-actions">
+        <a class="btn btn-solid" href="${b.menuUrl?esc(b.menuUrl):"#menu"}"${b.menuUrl?' target="_blank" rel="noopener"':""}>${esc(t("br.menu"))}</a>
+        <a class="btn btn-ghost" href="${mapUrl(b)}" target="_blank" rel="noopener">${esc(t("br.map"))}</a>
+        <a class="btn btn-ghost" href="#rezervasyon" data-pick="${b.id}">${esc(t("br.bookhere"))}</a>
+      </div>
+    </article>`}).join("");
+}
+
+/* yorumlar */
+function stars(r){let s="";for(let i=1;i<=5;i++)s+=STAR(r>=i-.25?"var(--amber)":"none");return `<span class="stars" aria-label="${r} / 5">${s}</span>`}
+function renderReviews(){
+  $("#reviews").innerHTML=BRANCHES.map(b=>{
+    const g=b.reviewsUrl||mapUrl(b);
+    return `<article class="rev-card">
+      <div class="rev-top">
+        <div><h3>${esc(b.name)}</h3><span style="color:var(--muted);font-size:.9rem">${esc(b.district)}</span></div>
+        <div class="score">${b.rating.toFixed(1)}<small>${esc(t("rev.count"))}${b.ratingCount?` · ${b.ratingCount}`:""}</small></div>
+      </div>
+      ${stars(b.rating)}
+      ${b.reviews.map(r=>`<blockquote class="quote" style="margin:0"><p>“${esc(L(r.text))}”</p><cite>${esc(r.author)}</cite></blockquote>`).join("")}
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="copy" href="${g}" target="_blank" rel="noopener">${esc(t("rev.all"))}</a>
+        <a class="copy" href="${g}" target="_blank" rel="noopener">${esc(t("rev.write"))}</a>
+      </div>
+    </article>`}).join("");
+}
+
+/* hikâye */
+function renderStory(){
+  $("#timeline").innerHTML=STORY.timeline.map(x=>`<li><span class="yr">${esc(x.yr)}</span><p>${esc(x[lang]??x.tr)}</p></li>`).join("");
+  $("#values").innerHTML=STORY.values.map(v=>{const[h,p]=v[lang]??v.tr;return `<div class="value"><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`}).join("");
+}
+
+/* menü */
+let catIdx=0;
+function renderMenu(){
+  $("#menuGrid").innerHTML=BRANCHES.map(b=>b.menuUrl
+    ?`<a class="menu-card" href="${esc(b.menuUrl)}" target="_blank" rel="noopener"><span class="k">${esc(b.district)}</span><h3>${esc(b.name)}</h3><span class="go">${esc(t("menu.open"))} <span aria-hidden="true">→</span></span></a>`
+    :`<div class="menu-card soon"><span class="k">${esc(b.district)}</span><h3>${esc(b.name)}</h3><span class="go">${esc(t("menu.soon"))}</span></div>`).join("");
+}
+
+/* iletişim */
+function renderContacts(){
+  $("#contacts").innerHTML=BRANCHES.map(b=>`<div class="contact">
+    <h3>${esc(b.name)} · ${esc(b.district)}</h3>
+    <div class="line"><span><small>${esc(t("ct.phone"))}</small>${esc(b.phone)}</span><button class="copy" data-copy="${esc(b.phone)}">${esc(t("ct.copy"))}</button></div>
+    <div class="line"><span><small>WhatsApp</small>+${esc(b.whatsapp)}</span><a class="copy" href="https://wa.me/${esc(b.whatsapp)}" target="_blank" rel="noopener">${esc(t("ct.write"))}</a></div>
+    <div class="line"><span><small>${esc(t("ct.address"))}</small>${esc(b.address||b.district)}</span><a class="copy" href="${mapUrl(b)}" target="_blank" rel="noopener">${esc(t("ct.route"))}</a></div>
+  </div>`).join("");
+}
+
+/* rezervasyon */
+const sel=$("#r-branch"), dateIn=$("#r-date"), party=$("#r-party");
+const today=new Date(); dateIn.min=iso(today); dateIn.value=iso(today);
+const maxD=new Date(today); maxD.setDate(maxD.getDate()+60); dateIn.max=iso(maxD);
+function renderBranchSelect(){
+  const v=sel.value;
+  sel.innerHTML=BRANCHES.map(b=>`<option value="${b.id}">${esc(b.name)} · ${esc(b.district)}</option>`).join("");
+  if(v)sel.value=v;
+}
+function fillTimes(){
+  const b=BRANCHES.find(x=>x.id===sel.value), el=$("#r-time"), prev=el.value;
+  let o=toMin(b.hours.open), c=toMin(b.hours.close); if(c<=o)c+=1440;
+  const isToday=dateIn.value===iso(new Date()), now=new Date().getHours()*60+new Date().getMinutes();
+  const opts=[];
+  for(let m=o;m<=c-60;m+=30){ if(isToday&&m<now+30)continue; const mm=m%1440; opts.push(`${pad(Math.floor(mm/60))}:${pad(mm%60)}`) }
+  el.innerHTML=opts.length?opts.map(x=>`<option${x===prev?" selected":""}>${x}</option>`).join(""):`<option value="">${esc(t("res.notime"))}</option>`;
+}
+sel.addEventListener("change",fillTimes); dateIn.addEventListener("change",fillTimes);
+$("#p-minus").onclick=()=>party.value=Math.max(1,+party.value-1);
+$("#p-plus").onclick=()=>party.value=Math.min(20,+party.value+1);
+function setErr(id,key){document.querySelector(`.err[data-for="${id}"]`).textContent=key?t(key):""}
+$("#resForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const name=$("#r-name").value.trim(), digits=$("#r-phone").value.replace(/\D/g,""), time=$("#r-time").value;
+  const bad={ "r-name":name.length<2&&"err.name", "r-phone":digits.length<10&&"err.phone", "r-date":!dateIn.value&&"err.date", "r-time":!time&&"err.time" };
+  Object.entries(bad).forEach(([id,k])=>setErr(id,k));
+  if(Object.values(bad).some(Boolean))return;
+  const b=BRANCHES.find(x=>x.id===sel.value), [y,m,d]=dateIn.value.split("-"), note=$("#r-note").value.trim();
+  const text=[t("msg.hello").replace("{b}",`${b.name} (${b.district})`),
+    `${t("msg.name")}: ${name}`,`${t("msg.phone")}: ${$("#r-phone").value.trim()}`,
+    `${t("msg.date")}: ${d}.${m}.${y}`,`${t("msg.time")}: ${time}`,`${t("msg.party")}: ${Math.max(1,+party.value||1)}`,
+    ...(note?[`${t("msg.note")}: ${note}`]:[])].join("\n");
+  $("#resText").textContent=text;
+  $("#waLink").href=`https://wa.me/${b.whatsapp}?text=${encodeURIComponent(text)}`;
+  $("#result").hidden=false;
+  $("#result").scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+$("#copyRes").addEventListener("click",()=>copyText($("#resText").textContent));
+
+/* olaylar */
+document.addEventListener("click",e=>{
+  const c=e.target.closest("[data-copy]"); if(c)copyText(c.dataset.copy);
+  const p=e.target.closest("[data-pick]"); if(p){sel.value=p.dataset.pick;fillTimes()}
+  const f=e.target.closest("[data-feat]"); if(f){const k=f.dataset.feat;active.has(k)?active.delete(k):active.add(k);renderBranches()}
+  const cat=e.target.closest("[data-cat]"); if(cat){catIdx=+cat.dataset.cat;renderMenu()}
+  const lg=e.target.closest("[data-lang]"); if(lg){lang=lg.dataset.lang;try{localStorage.setItem("bs-lang",lang)}catch(_){};renderAll()}
+});
+
+function renderTicker(){
+  const items=t("tick").map(x=>`<span>${esc(x)}</span>`).join("");
+  $("#ticker").innerHTML=items+items+items+items;
+}
+function renderAll(){
+  applyStatic(); renderTicker(); renderBranches(); renderMenu(); renderContacts(); renderBranchSelect(); fillTimes();
+  if(!$("#result").hidden)$("#result").hidden=true;
+}
+$("#yr").textContent=new Date().getFullYear();
+renderAll();
+(function setupReveal(){
+  let reduce=false; try{reduce=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+  if(reduce||!("IntersectionObserver" in window))return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll(".sec-head,.filter,.branch,.menu-card,.res-grid > *,.contact").forEach((el,i)=>{
+    if(el.getBoundingClientRect().top>innerHeight){el.classList.add("reveal");el.style.transitionDelay=(i%3)*90+"ms";io.observe(el)}
+  });
+})();
+try{ if(matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("video").forEach(v=>{v.removeAttribute("autoplay");v.pause()}) }catch(e){}
+</script>
+</body>
+</html>
