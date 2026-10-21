@@ -123,9 +123,11 @@ section.band{padding-block:clamp(56px,8vw,96px);border-top:1px solid var(--ink-3
 .branch-actions .btn{font-size:.85rem;padding:.6em 1em}
 
 /* özellik filtresi */
-.filter{display:grid;gap:12px;margin:-8px 0 24px;padding:18px 20px;border:1px solid var(--ink-3);border-radius:16px;background:var(--ink-2)}
-.filter .feats li{font-size:.85rem;padding:.45em .85em}
-.filter span{font:500 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.filter{display:grid;gap:10px;margin:-8px 0 24px;padding:14px 16px;border:1px solid var(--ink-3);border-radius:14px;background:var(--ink-2)}
+.filter .feats{gap:5px}
+.filter .feats li{font-size:.72rem;font-weight:600;padding:.3em .65em;gap:5px}
+.filter .feats svg{width:12px;height:12px}
+.filter span{font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 .chip{font:600 .82rem var(--f-body);padding:.45em .9em;border-radius:999px;border:1.5px solid var(--ink-3);background:transparent;color:var(--muted);cursor:pointer}
 .chip[aria-pressed="true"]{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
 .branch.dim{opacity:.35}
